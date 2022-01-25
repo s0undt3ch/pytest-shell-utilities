@@ -206,4 +206,4 @@ def test_display_name(tempfiles):
     )
     result = shell.run(sys.executable, script)
     assert result.returncode == 0
-    assert shell.get_display_name() == "Subprocess([{!r}, {!r}])".format(sys.executable, script)
+    assert shell.get_display_name() == f"Subprocess([{sys.executable!r}, {script!r}])"

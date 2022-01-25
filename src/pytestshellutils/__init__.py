@@ -8,16 +8,16 @@ import re
 import sys
 
 
-USE_DOWNGRADED_TRANSPILED_CODE = sys.version_info < (3, 6)
+USE_DOWNGRADED_TRANSPILED_CODE = sys.version_info < (3, 7)
 
 
 if USE_DOWNGRADED_TRANSPILED_CODE:
-    # We generated downgraded code just for Py3.5
+    # We generated downgraded code just for Py < 3.7
     # Let's just import from those modules instead
 
     class NoTypingImporter:
         """
-        Meta importer to redirect imports on Py35.
+        Meta importer to redirect imports on Py < 3.7.
         """
 
         NO_REDIRECT_NAMES = (
@@ -34,7 +34,7 @@ if USE_DOWNGRADED_TRANSPILED_CODE:
 
         def load_module(self, name):  # noqa: D102
             if not name.startswith(self.NO_REDIRECT_NAMES):
-                mod = importlib.import_module("pytestshellutils.downgraded.{}".format(name[17:]))
+                mod = importlib.import_module(f"pytestshellutils.downgraded.{name[17:]}")
             else:
                 mod = importlib.import_module(name)
             sys.modules[name] = mod

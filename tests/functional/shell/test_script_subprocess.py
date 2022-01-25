@@ -196,7 +196,7 @@ def test_not_started():
 
 def test_display_name(tempfiles):
     python_binary_name = pathlib.Path(sys.executable).name
-    display_name = "ScriptSubprocess({})".format(python_binary_name)
+    display_name = f"ScriptSubprocess({python_binary_name})"
     shell = ScriptSubprocess(script_name=sys.executable)
     assert shell.get_display_name() == display_name
     script = tempfiles.makepyfile(
@@ -220,9 +220,9 @@ def test_get_script_path(subtests):
     with subtests.test(script_name=python_binary_name):
         shell = ScriptSubprocess(script_name=python_binary_name)
         assert shell.get_script_path() == sys.executable
-    python_binary_name = "{}3.100".format(python_binary_name)
+    python_binary_name = f"{python_binary_name}3.100"
     with subtests.test(script_name=python_binary_name):
         shell = ScriptSubprocess(script_name=python_binary_name)
         with pytest.raises(FileNotFoundError) as exc:
             shell.get_script_path()
-        assert "The CLI script {!r} does not exist".format(python_binary_name) in str(exc)
+        assert f"The CLI script {python_binary_name!r} does not exist" in str(exc)

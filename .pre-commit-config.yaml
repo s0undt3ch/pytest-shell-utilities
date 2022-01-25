@@ -38,21 +38,6 @@ repos:
         language: system
   # <---- Local Hooks ------------------------------------------------------------------------------------------------
 
-  # ----- Remove Typing - Py3.5 Support  ---------------------------------------------------------------------------->
-  - repo: https://github.com/s0undt3ch/downgrade-source
-    rev: v2.1.0
-    hooks:
-      - id: downgrade-source
-        name: Downgrade source code into a separate package to support Py3.5
-        files: ^src/.*\.py$
-        exclude: ^src/pytestshellutils/((__init__|version)\.py|downgraded/.*\.py)$
-        args:
-          - --target-version=3.5
-          - --pkg-path=src/pytestshellutils
-          - --skip-checker=nounusableimports
-          - --skip-checker=nostarimports
-  # <---- Remove Typing - Py3.5 Support  -----------------------------------------------------------------------------
-
   # ----- Formatting ------------------------------------------------------------------------------------------------>
   - repo: https://github.com/saltstack/pre-commit-remove-import-headers
     rev: 1.1.0
@@ -84,9 +69,9 @@ repos:
     rev: v2.31.0
     hooks:
       - id: pyupgrade
-        name: Rewrite Code to be Py3.5+
+        name: Rewrite Code to be Py3.7+
         args: [
-          --py3-plus
+          --py37-plus
         ]
         files: ^((setup|noxfile)|(src|tests)/.*)\.py$
         exclude: ^src/pytestshellutils/(version.py|downgraded/.*)$
@@ -96,7 +81,7 @@ repos:
     hooks:
       - id: reorder-python-imports
         args:
-          - --py3-plus
+          - --py37-plus
           - --application-directories=.:src
         exclude: ^src/pytestshellutils/(version.py|downgraded/.*)$
 
@@ -116,6 +101,21 @@ repos:
         exclude: ^src/pytestshellutils/downgraded/.*$
         additional_dependencies: [black==21.10b0]
   # <---- Formatting -------------------------------------------------------------------------------------------------
+
+  # ----- Downgrade Code - Py < 3.7 Support ------------------------------------------------------------------------->
+  - repo: https://github.com/s0undt3ch/downgrade-source
+    rev: v2.1.0
+    hooks:
+      - id: downgrade-source
+        name: Downgrade source code into a separate package to support Py3.5
+        files: ^src/.*\.py$
+        exclude: ^src/pytestshellutils/((__init__|version)\.py|downgraded/.*\.py)$
+        args:
+          - --target-version=3.5
+          - --pkg-path=src/pytestshellutils
+          - --skip-checker=nounusableimports
+          - --skip-checker=nostarimports
+  # <---- Downgrade Code - Py < 3.7 Support --------------------------------------------------------------------------
 
   # ----- Security -------------------------------------------------------------------------------------------------->
   - repo: https://github.com/PyCQA/bandit

@@ -598,11 +598,9 @@ def test_exact_max_start_attempts(tempfiles, caplog, max_start_attempts):
     with caplog.at_level(logging.INFO):
         with pytest.raises(FactoryNotStarted) as exc:
             daemon.start()
-        assert "confirm running status after {} attempts".format(max_start_attempts) in str(
-            exc.value
-        )
+        assert f"confirm running status after {max_start_attempts} attempts" in str(exc.value)
     start_attempts = [
-        "Attempt: {} of {}".format(n, max_start_attempts) for n in range(1, max_start_attempts + 1)
+        f"Attempt: {n} of {max_start_attempts}" for n in range(1, max_start_attempts + 1)
     ]
     for record in caplog.records:
         if not record.message.startswith("Starting Daemon"):
